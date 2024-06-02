@@ -1,7 +1,13 @@
 import { MongooseModule } from '@nestjs/mongoose';
-import { EventSchema } from './event-srore/schemas/event.schema';
-import { EVENT_STORE_CONNECTION } from 'src/core/core.constants';
 import { Module } from '@nestjs/common';
+
+import { EventSchema } from './event-srore/schemas/event.schema';
+import { EVENT_STORE_CONNECTION } from '../../core/core.constants';
+import { EventSerializer } from './event-srore/serializers/event.serializer';
+import { EventStorePublisher } from './event-srore/publishers/event-store.publisher';
+import { MongoEventStore } from './event-srore/mongo-event-store';
+import { EventsBridge } from './event-srore/events-bridge';
+import { EventDeserializer } from './event-srore/deserializers/event.deserializer';
 
 @Module({
   imports: [
@@ -9,6 +15,13 @@ import { Module } from '@nestjs/common';
       [{ name: Event.name, schema: EventSchema }],
       EVENT_STORE_CONNECTION,
     ),
+  ],
+  providers: [
+    EventSerializer,
+    EventStorePublisher,
+    MongoEventStore,
+    EventDeserializer,
+    EventsBridge,
   ],
 })
 export class SharedInfrastructureModule {}

@@ -1,8 +1,7 @@
-version: '3'
+version: '3.8'
 services:
-  db:
+  write-db:
     image: postgres
-    restart: always
     ports:
       - '5432:5432'
     environment:
@@ -22,3 +21,4 @@ services:
     command: mongod --replSet vf-event-store-repl-set
     volumes:
       - ./scripts/event-store-mongoinit.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    restart: always
